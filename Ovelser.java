@@ -76,14 +76,55 @@ public class Ovelser {
 				System.out.println("Utholdenhet eller styrke?");
 				String type2 = scanner.nextLine();
 				if (type2.equals("Utholdenhet")) {
-					Utholdenhet utholdenhet = new Utholdenhet();
-					utholdenhet.insettUtholdenhetsøvelse();
+					try {
+						
+						Scanner scanner1 = new Scanner(System.in);
+						System.out.println("Navn: ");
+						String navn1 = scanner1.nextLine();
+						System.out.println("Km: ");
+						String km = scanner1.nextLine();
+						System.out.println("Minutter: ");
+						String minutter = scanner1.nextLine();
+						
+						scanner1.close();
+						
+						String query = "INSERT INTO Utholdenhet (navn, km, minutter)"
+								+ "VALUES ('" + navn1 + "', '" + km + "', '" + minutter + "')";
+						System.out.println("Øvelse lagt til i ingrivho_nobe.Utholdenhet.");
+						stmt = conn.createStatement();
+						stmt.executeUpdate(query);
+					}
+					catch (SQLException ex){
+						System.out.println("SQLException: " + ex.getMessage());
+					}
+					
 				} else if (type2.equals("Styrke")) {
-					Styrke styrke = new Styrke();
-					styrke.insettStyrkeøvelse();
+					try {
+						
+						Scanner scanner2 = new Scanner(System.in);
+						System.out.println("Navn: ");
+						String navn2 = scanner2.nextLine();
+						System.out.println("Muskelgruppe: ");
+						String muskelgruppe = scanner2.nextLine();
+						
+						scanner2.close();
+						
+						String query = "INSERT INTO Styrke (navn, muskelgruppe)"
+								+ "VALUES ('" + navn2 + "','" + muskelgruppe + "')";
+						
+						System.out.println("Øvelse lagt til i ingrivho_nobe.Styrke.");
+						stmt = conn.createStatement();
+						stmt.executeUpdate(query);
+						
+					}
+					catch (SQLException ex){
+						System.out.println("SQLException: " + ex.getMessage());
+					}
+					
 				} else {
 					System.out.println("Du må velge enten utholdenhet eller styrke.");
 				}
+				
 			} else {
 				System.out.println("Øvelse lagt til i ingrivho_nobe.Øvelser.");
 			}
