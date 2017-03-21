@@ -1,4 +1,4 @@
-package karoline;
+package intense_daberoni;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -69,6 +69,24 @@ public class Ovelser {
 			String repetisjoner = scanner.nextLine();
 			System.out.println("Sett: ");
 			String sett = scanner.nextLine();
+			
+			System.out.println("Vil du legge til type øvelse? Ja eller nei");
+			String type1 = scanner.nextLine();
+			if (type1.equals("Ja")) {
+				System.out.println("Utholdenhet eller styrke?");
+				String type2 = scanner.nextLine();
+				if (type2.equals("Utholdenhet")) {
+					Utholdenhet utholdenhet = new Utholdenhet();
+					utholdenhet.insettUtholdenhetsøvelse();
+				} else if (type2.equals("Styrke")) {
+					Styrke styrke = new Styrke();
+					styrke.insettStyrkeøvelse();
+				} else {
+					System.out.println("Du må velge enten utholdenhet eller styrke.");
+				}
+			} else {
+				System.out.println("Øvelse lagt til i ingrivho_nobe.Øvelser.");
+			}
 			
 			scanner.close();
 			
