@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 
-public class main {
+public class Trenings√∏kt {
 	
 	 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	 static final String DB_URL = "jdbc:mysql://mysql.stud.ntnu.no/ingrivho_nobe_db";
@@ -39,7 +39,7 @@ public class main {
 		try {
 			stmt = conn.createStatement();
 			
-			String query = "SELECT * FROM ÿvelser";
+			String query = "SELECT * FROM √òvelser";
 			if (stmt.execute(query)) {
 				rs = stmt.getResultSet();
 			}
@@ -55,7 +55,7 @@ public class main {
 		}
 	}
 	
-	public void insettTreningsÿkt()  {
+	public void insettTrenings√òkt()  {
 		try {
 			/*
 			System.out.println("Vil du trene inne eller ute?");
@@ -63,7 +63,7 @@ public class main {
 			String input = scanner.nextLine();
 			if(input.equals("inne")){
 			*/
-			// Vil vÊre feil ja?
+			// Vil v√¶re feil ja?
 				Scanner scanner = new Scanner(System.in);
 				System.out.println("TreningsID: ");
 				String treningsID = scanner.nextLine();
@@ -83,7 +83,7 @@ public class main {
 				String navn = scanner.nextLine();
 			
 					
-				String query = "INSERT INTO Trenings¯kt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
+				String query = "INSERT INTO Trenings√∏kt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
 						+ "VALUES ('" + treningsID + "', '" + dato + "', '" + tidspunkt + "', '" + varighet + "', '" + personligForm + "', '" + prestasjon 
 						+ "', '" + notat + "', '" + navn + "')";
 				stmt = conn.createStatement();
@@ -98,7 +98,7 @@ public class main {
 				System.out.println("AktivitetsID: ");
 				String treningsIDinne = scanner.nextLine();
 				
-				String inne = "INSERT INTO Trenings¯kt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
+				String inne = "INSERT INTO Trenings√∏kt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
 						+ "VALUES ('" + treningsIDinne + "', '" + luft + "', '" + tilskuere + "', '" + varighet + "')";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(inne);
@@ -113,14 +113,14 @@ public class main {
 	}
 	
 	public static void main(String[] args) {
-		main test = new main();
+		Trenings√∏kt test = new Trenings√∏kt();
 		try {
 			test.connect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		test.sporring();
-		test.insettTreningsÿkt();
+		test.insettTrenings√òkt();
 	}
 	
 
