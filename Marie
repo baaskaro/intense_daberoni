@@ -17,6 +17,8 @@ public class Marie {
 	static final String PASS = "1234";		 
 	 
 	 Connection conn = null;
+	 
+	 public static String treningsID;
 	
 	
 	public void connect() throws Exception {
@@ -33,6 +35,27 @@ public class Marie {
 	}
 	
 	Statement stmt = null;
+	ResultSet rs = null;
+	
+	
+	public void HentUtNotat(){
+		try {
+			stmt = conn.createStatement();
+			
+			String query = "SELECT * FROM Treningsøkt";
+			if (stmt.execute(query)) {
+				rs = stmt.getResultSet();
+			}
+			
+			while (rs.next()) {
+				String kolonne_notat = rs.getString(7);
+				System.out.println(kolonne_notat);
+			}
+		}
+		catch (SQLException ex){
+			System.out.println("SQLException: " + ex.getMessage());
+		}
+	}
 	
 	
 	public void insettTreningsØkt()  {
@@ -57,7 +80,7 @@ public class Marie {
 				String notat = scanner.nextLine();
 				System.out.println("Navn: ");
 				String navn = scanner.nextLine();
-			
+				Marie.treningsID = treningsID;
 					
 				String query = "INSERT INTO Treningsøkt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
 						+ "VALUES ('" + treningsID + "', '" + dato + "', '" + tidspunkt + "', '" + varighet + "', '" + personligForm + "', '" + prestasjon 
@@ -66,15 +89,16 @@ public class Marie {
 				stmt.executeUpdate(query);
 				
 				System.out.println("Værforhold: ");
-				String vær = scanner.nextLine();
+				String værforhold = scanner.nextLine();
 				System.out.println("Temperatur: ");
 				String temperatur = scanner.nextLine();
 				
-				String ute = "INSERT INTO Innendørsaktivitet (treningsID, værforhold, temperatur) "
-						+ "VALUES ('" + treningsID + "', '" + vær + "', '" + temperatur + "')";
+				String ute = "INSERT INTO Utendørsaktivitet (treningsID, værforhold, temperatur) "
+						+ "VALUES ('" + treningsID + "', '" + værforhold + "', '" + temperatur + "')";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(ute);
 				System.out.println("La til utetrening");
+				
 				
 			}
 			
@@ -95,6 +119,7 @@ public class Marie {
 				String notat = scanner.nextLine();
 				System.out.println("Navn: ");
 				String navn = scanner.nextLine();
+				Marie.treningsID = treningsID;
 				
 						
 				String query = "INSERT INTO Treningsøkt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
@@ -114,7 +139,7 @@ public class Marie {
 				stmt.executeUpdate(inne);
 				System.out.println("La til innetrening");
 			
-				scanner.close();
+				
 			}
 			else{
 						System.out.println("Prøv igjen");
@@ -128,12 +153,22 @@ public class Marie {
 	}
 	public void leggTil() {
 		System.out.println("Legg til øvelse? ");
-		Scanner scanner = new Scanner(System.in);
-		String input = scanner.nextLine();
+		Scanner scanner3 = new Scanner(System.in);
+		String input = scanner3.nextLine();
 		while (input.equals("ja") || input.equals("Ja")){
 			insettØvelse();
+			System.out.println("Fortsette? Ja, nei");
+			input = scanner3.nextLine();
 		}
-		scanner.close();
+		System.out.println("Vil du hente ut notat? Ja, nei");
+		input = scanner3.nextLine();
+		if (input.equals("Ja") || input.equals("ja")) {
+			HentUtNotat();
+		} else {
+			System.out.println("Ok.");
+			
+		}
+		scanner3.close();
 	}
 	
 	
@@ -169,13 +204,19 @@ public class Marie {
 					System.out.println("Minutter: ");
 					String minutter = scanner1.nextLine();
 					
-					scanner1.close();
+					
 					
 					String query = "INSERT INTO Utholdenhet (navn, km, minutter)"
 							+ "VALUES ('" + navn1 + "', '" + km + "', '" + minutter + "')";
 					System.out.println("Øvelse lagt til i ingrivho_nobe.Utholdenhet.");
 					stmt = conn.createStatement();
 					stmt.executeUpdate(query);
+					
+					String leggTreningsøktØvelse = "INSERT INTO TreningsøktInneholderØvelser (treningsID, navn) "
+							+ "VALUES ('" + Marie.treningsID + "', '" + navn + "')";
+					stmt = conn.createStatement();
+					stmt.executeUpdate(leggTreningsøktØvelse);
+					System.out.println("Lagt til koblingstabell");
 				}
 				catch (SQLException ex){
 					System.out.println("SQLException: " + ex.getMessage());
@@ -190,7 +231,7 @@ public class Marie {
 					System.out.println("Muskelgruppe: ");
 					String muskelgruppe = scanner2.nextLine();
 					
-					scanner2.close();
+					
 					
 					String query = "INSERT INTO Styrke (navn, muskelgruppe)"
 							+ "VALUES ('" + navn2 + "','" + muskelgruppe + "')";
@@ -199,9 +240,10 @@ public class Marie {
 					stmt = conn.createStatement();
 					stmt.executeUpdate(query);
 					
-					String treningsID = "SELECT treningsID FROM Treningsøkt ORDER BY treningsID DESC LIMIT 1";
+	//				String treningsID = "SELECT treningsID FROM Treningsøkt ORDER BY treningsID DESC LIMIT 1";
+	//				String treningsID = "SELECT TOP 1 treningsID FROM Treningsøkt ORDER BY treningsID DESC";
 					String leggTreningsøktØvelse = "INSERT INTO TreningsøktInneholderØvelser (treningsID, navn) "
-							+ "VALUES ('" + treningsID + "', '" + navn + "')";
+							+ "VALUES ('" + Marie.treningsID + "', '" + navn + "')";
 					stmt = conn.createStatement();
 					stmt.executeUpdate(leggTreningsøktØvelse);
 					System.out.println("Lagt til koblingstabell");
@@ -219,7 +261,7 @@ public class Marie {
 			System.out.println("Øvelse lagt til i ingrivho_nobe.Øvelser.");
 		}
 		
-		scanner.close();
+		
 		
 		String query = "INSERT INTO Øvelser (navn, beskrivelse, belastning, repetisjoner, sett)"
 				+ "VALUES ('" + navn + "', '" + beskrivelse + "', '" + belastning + "', '" + 
@@ -245,6 +287,7 @@ public class Marie {
 		
 		test.insettTreningsØkt();
 		test.leggTil();
+		
 	}
 	
 
