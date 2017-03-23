@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 
-public class Treningsøkt {
+public class main {
 	
 	 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	 static final String DB_URL = "jdbc:mysql://mysql.stud.ntnu.no/ingrivho_nobe_db";
@@ -39,7 +39,7 @@ public class Treningsøkt {
 		try {
 			stmt = conn.createStatement();
 			
-			String query = "SELECT * FROM Øvelser";
+			String query = "SELECT * FROM Treningsøkt";
 			if (stmt.execute(query)) {
 				rs = stmt.getResultSet();
 			}
@@ -57,14 +57,10 @@ public class Treningsøkt {
 	
 	public void insettTreningsØkt()  {
 		try {
-			/*
 			System.out.println("Vil du trene inne eller ute?");
 			Scanner scanner = new Scanner(System.in);
 			String input = scanner.nextLine();
-			if(input.equals("inne")){
-			*/
-			// Vil være feil ja?
-				Scanner scanner = new Scanner(System.in);
+			if(input.equals("ute")){
 				System.out.println("TreningsID: ");
 				String treningsID = scanner.nextLine();
 				System.out.println("Dato: ");
@@ -88,24 +84,63 @@ public class Treningsøkt {
 						+ "', '" + notat + "', '" + navn + "')";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(query);
-				/*
+				
+				System.out.println("Værforhold: ");
+				String vær = scanner.nextLine();
+				System.out.println("Temperatur: ");
+				String temperatur = scanner.nextLine();
+				
+				String ute = "INSERT INTO Innendørsaktivitet (treningsID, værforhold, temperatur) "
+						+ "VALUES ('" + treningsID + "', '" + vær + "', '" + temperatur + "')";
+				stmt = conn.createStatement();
+				stmt.executeUpdate(ute);
+				System.out.println("La til uteetrening");
+			}
+			
+			else if(input.equals("inne")){
 				System.out.println("TreningsID: ");
-				String treningsIDinne = scanner.nextLine();
+				String treningsID = scanner.nextLine();
+				System.out.println("Dato: ");
+				String dato = scanner.nextLine();
+				System.out.println("Tidspunkt: ");
+				String tidspunkt = scanner.nextLine();
+				System.out.println("Varighet: ");
+				String varighet = scanner.nextLine();
+				System.out.println("Personlig form: ");
+				String personligForm = scanner.nextLine();
+				System.out.println("Prestasjon: ");
+				String prestasjon = scanner.nextLine();
+				System.out.println("Notat: ");
+				String notat = scanner.nextLine();
+				System.out.println("Navn: ");
+				String navn = scanner.nextLine();
+				
+				
+						
+				String query = "INSERT INTO Treningsøkt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
+							+ "VALUES ('" + treningsID + "', '" + dato + "', '" + tidspunkt + "', '" + varighet + "', '" + personligForm + "', '" + prestasjon 
+							+ "', '" + notat + "', '" + navn + "')";
+				stmt = conn.createStatement();
+				stmt.executeUpdate(query);
+				
 				System.out.println("Luft: ");
 				String luft = scanner.nextLine();
 				System.out.println("Antall tilskuere: ");
 				String tilskuere = scanner.nextLine();
-				System.out.println("AktivitetsID: ");
-				String treningsIDinne = scanner.nextLine();
 				
-				String inne = "INSERT INTO Treningsøkt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
-						+ "VALUES ('" + treningsIDinne + "', '" + luft + "', '" + tilskuere + "', '" + varighet + "')";
+				String inne = "INSERT INTO Innendørsaktivitet (treningsID, luft, tilskuere) "
+						+ "VALUES ('" + treningsID + "', '" + luft + "', '" + tilskuere + "')";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(inne);
 				System.out.println("La til innetrening");
-				*/
-		}
+			}
+			else{
+						System.out.println("Try once more");
+					}
+				
+		
 			
+		}
 		
 		catch (SQLException ex){
 			System.out.println("SQLException: " + ex.getMessage());
@@ -113,7 +148,7 @@ public class Treningsøkt {
 	}
 	
 	public static void main(String[] args) {
-		Treningsøkt test = new Treningsøkt();
+		main test = new main();
 		try {
 			test.connect();
 		} catch (Exception e) {
