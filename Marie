@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 
-public class main {
+public class Marie {
 	
 	 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	 static final String DB_URL = "jdbc:mysql://mysql.stud.ntnu.no/ingrivho_nobe_db";
@@ -35,13 +35,12 @@ public class main {
 	Statement stmt = null;
 	
 	
-	
 	public void insettTreningsØkt()  {
 		try {
 			System.out.println("Vil du trene inne eller ute?");
 			Scanner scanner = new Scanner(System.in);
 			String input = scanner.nextLine();
-			if(input.equals("ute")){
+			if(input.equals("ute") || input.equals("Ute")){
 				System.out.println("TreningsID: ");
 				String treningsID = scanner.nextLine();
 				System.out.println("Dato: ");
@@ -75,11 +74,11 @@ public class main {
 						+ "VALUES ('" + treningsID + "', '" + vær + "', '" + temperatur + "')";
 				stmt = conn.createStatement();
 				stmt.executeUpdate(ute);
-				System.out.println("La til uteetrening");
+				System.out.println("La til utetrening");
 				
 			}
 			
-			else if(input.equals("inne")){
+			else if(input.equals("inne") || input.equals("Inne")){
 				System.out.println("TreningsID: ");
 				String treningsID = scanner.nextLine();
 				System.out.println("Dato: ");
@@ -97,7 +96,6 @@ public class main {
 				System.out.println("Navn: ");
 				String navn = scanner.nextLine();
 				
-				
 						
 				String query = "INSERT INTO Treningsøkt (treningsID, dato, tidspunkt, varighet, personligForm, prestasjon, notat, navn) "
 							+ "VALUES ('" + treningsID + "', '" + dato + "', '" + tidspunkt + "', '" + varighet + "', '" + personligForm + "', '" + prestasjon 
@@ -105,7 +103,7 @@ public class main {
 				stmt = conn.createStatement();
 				stmt.executeUpdate(query);
 				
-				System.out.println("Luft: ");
+				System.out.println("Luft (på en skala fra 1 til 10): ");
 				String luft = scanner.nextLine();
 				System.out.println("Antall tilskuere: ");
 				String tilskuere = scanner.nextLine();
@@ -116,10 +114,10 @@ public class main {
 				stmt.executeUpdate(inne);
 				System.out.println("La til innetrening");
 			
-				
+				scanner.close();
 			}
 			else{
-						System.out.println("Try once more");
+						System.out.println("Prøv igjen");
 					}
 		}
 		catch (SQLException ex){
@@ -132,10 +130,10 @@ public class main {
 		System.out.println("Legg til øvelse? ");
 		Scanner scanner = new Scanner(System.in);
 		String input = scanner.nextLine();
-		while (input.equals("ja")){
+		while (input.equals("ja") || input.equals("Ja")){
 			insettØvelse();
 		}
-		
+		scanner.close();
 	}
 	
 	
@@ -157,10 +155,10 @@ public class main {
 		
 		System.out.println("Vil du legge til type øvelse? Ja eller nei");
 		String type1 = scanner.nextLine();
-		if (type1.equals("Ja")) {
+		if (type1.equals("Ja") || type1.equals("ja")) {
 			System.out.println("Utholdenhet eller styrke?");
 			String type2 = scanner.nextLine();
-			if (type2.equals("Utholdenhet")) {
+			if (type2.equals("Utholdenhet") || type2.equals("utholdenhet")) {
 				try {
 					
 					Scanner scanner1 = new Scanner(System.in);
@@ -183,7 +181,7 @@ public class main {
 					System.out.println("SQLException: " + ex.getMessage());
 				}
 				
-			} else if (type2.equals("Styrke")) {
+			} else if (type2.equals("Styrke") || type2.equals("styrke")) {
 				try {
 					
 					Scanner scanner2 = new Scanner(System.in);
@@ -201,7 +199,7 @@ public class main {
 					stmt = conn.createStatement();
 					stmt.executeUpdate(query);
 					
-					String treningsID = "SELECT treningsID FROM Treningsøkt ORDER BY Id DESC LIMIT 1";
+					String treningsID = "SELECT treningsID FROM Treningsøkt ORDER BY treningsID DESC LIMIT 1";
 					String leggTreningsøktØvelse = "INSERT INTO TreningsøktInneholderØvelser (treningsID, navn) "
 							+ "VALUES ('" + treningsID + "', '" + navn + "')";
 					stmt = conn.createStatement();
@@ -238,7 +236,7 @@ public class main {
 	
 	
 	public static void main(String[] args) {
-		main test = new main();
+		Marie test = new Marie();
 		try {
 			test.connect();
 		} catch (Exception e) {
